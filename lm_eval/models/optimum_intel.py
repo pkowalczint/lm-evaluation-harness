@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 
-from llm_bench_utils.ov_utils import create_text_gen_model, build_ov_tokenizer
+from llm_bench_utils.ov_utils import create_text_gen_model
 from llm_bench_utils.model_utils import get_use_case
 
 from tqdm import tqdm

@@ -317,6 +317,7 @@ class TemplateLM(LM):
     tokenizer = None
 
     def __init__(self):
+        super().__init__()
         self.batch_sizes = {}
         self.batch_schedule = 1
 
