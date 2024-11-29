@@ -91,6 +91,8 @@ class HFLM(TemplateLM):
         gptqmodel: Optional[bool] = False,
         torch_compile: Optional[bool]= False,
         torch_compile_openvino_backend: Optional[bool]= False,
+        torch_compile_dynamic: Optional[bool] = None,
+        torch_compile_options: Optional[dict[str, str | int | bool] | None] = None,
         **kwargs,
     ) -> None:
         super().__init__()
@@ -171,12 +173,13 @@ class HFLM(TemplateLM):
                     trust_remote_code=trust_remote_code,
                 )
 
-            print(f"!!! torch_compile: {torch_compile}, torch_compile_openvino_backend: {torch_compile_openvino_backend}")
+            print(f"!!! torch_compile: {torch_compile}, torch_compile_openvino_backend: {torch_compile_openvino_backend}, "\
+                  f"torch_compile_dynamic: {torch_compile_dynamic}, torch_compile_options: {torch_compile_options}")
             if torch_compile:
                 if torch_compile_openvino_backend:
-                    self.model = torch.compile(self.model, backend="openvino")
+                    self.model = torch.compile(self.model, backend="openvino", dynamic=torch_compile_dynamic, options=torch_compile_options)
                 else:
-                    self.model = torch.compile(self.model)
+                    self.model = torch.compile(self.model, dynamic=torch_compile_dynamic, options=torch_compile_options)
 
             # determine which of 'causal' and 'seq2seq' backends to use for HF models
         self._get_backend(
